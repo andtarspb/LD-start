@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     Transform groundCheck;
     [SerializeField]
+    Transform topCheck;
+    [SerializeField]
     float groundDistance;
     [SerializeField]
     LayerMask groundMask;
@@ -24,10 +26,12 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 velocity;
 
+    CharacterController charController;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        charController = GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
@@ -35,13 +39,20 @@ public class PlayerMovement : MonoBehaviour
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-        if (isGrounded && velocity.y < 0)
+        if (!isGrounded)
+        {
+            charController.stepOffset = 0f;
+        }
+        else if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
+            charController.stepOffset = 0.5f;
         }
 
         // apply input
         controller.Move(MoveInput() * speed * Time.deltaTime);
+
+        CrouchInput();
 
         // apply gravity
         if (Input.GetButtonDown("Jump") && isGrounded)
@@ -58,6 +69,22 @@ public class PlayerMovement : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
-        return transform.right * x + transform.forward * z;
+        //charController.SimpleMove(Vector3.ClampMagnitude(transform.right * x + transform.forward * z, 1) * speed);
+
+        return Vector3.ClampMagnitude(transform.right * x + transform.forward * z, 1);
+    }
+
+    void CrouchInput()
+    {
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            transform.localScale = new Vector3(1, 0.6f, 1);
+        }
+        else if (!Physics.CheckSphere(topCheck.position, groundDistance, groundMask))
+        {            
+            transform.localScale = new Vector3(1, 1, 1);
+
+        }
+
     }
 }
