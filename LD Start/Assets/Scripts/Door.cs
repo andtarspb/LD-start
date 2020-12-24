@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class Door : MonoBehaviour
 {
-    enum DoorState
+    public enum DoorState
     {
         Closed,
         OpenedForward,
@@ -20,13 +20,13 @@ public class Door : MonoBehaviour
     }
 
     [SerializeField]
-    float duration;
+    public float duration;
     [SerializeField]
-    DoorState currentState;
+    public DoorState currentState;
     [SerializeField]
     public PlayerPos currentPlayerPos;
 
-    bool isInteractable;
+    public bool isInteractable;
 
     // Start is called before the first frame update
     void Start()

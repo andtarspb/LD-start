@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DoorInteractor : MonoBehaviour
 {
@@ -36,10 +37,36 @@ public class DoorInteractor : MonoBehaviour
                 openDoortext.SetActive(true);
 
                 if (Input.GetKeyDown(KeyCode.E))
-                {                    
-                    door.GetComponent<Door>().Interact();
+                {
+                    if (door.GetComponent<DoorWithLatch>())
+                    {
+                        door.GetComponent<DoorWithLatch>().Interact();
+                    }
+                    else
+                    {
+                        door.GetComponent<Door>().Interact();
+                    }
                 }
             }
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.GetComponent<DoorCollider>())
+        {
+            openDoortext.GetComponent<Text>().text = "Press \"E\" to interact with the door";
+
+            var col = other.GetComponent<DoorCollider>();
+            if (col.GetComponentInParent<DoorWithLatch>())
+            {
+                var doorWithLatch = col.GetComponentInParent<DoorWithLatch>();
+                if (col.frontCollider && doorWithLatch.locked && doorWithLatch.triedToOpen)
+                {
+                    openDoortext.GetComponent<Text>().text = "Locked from the other side";
+                }
+            }
+            
         }
     }
 }

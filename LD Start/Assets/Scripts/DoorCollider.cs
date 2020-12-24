@@ -8,12 +8,16 @@ public class DoorCollider : MonoBehaviour
     Door door;
 
     [SerializeField]
-    bool frontCollider;
+    public bool frontCollider;
+
+    //[SerializeField] GameObject buttonUI;
 
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+            //buttonUI.SetActive(true);
+
             if (frontCollider)
             {
                 door.currentPlayerPos = Door.PlayerPos.Front;
@@ -29,6 +33,7 @@ public class DoorCollider : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            //buttonUI.SetActive(false);
             door.currentPlayerPos = Door.PlayerPos.Far;
         }
     }
