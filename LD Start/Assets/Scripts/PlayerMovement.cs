@@ -23,6 +23,8 @@ public class PlayerMovement : MonoBehaviour
     float jumpHeight;
 
     bool isGrounded;
+    bool isCeilinged;
+    bool isCrouching;
 
     Vector3 velocity;
 
@@ -38,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        isCeilinged = Physics.CheckSphere(topCheck.position, groundDistance, groundMask);
 
         if (!isGrounded)
         {
@@ -54,10 +57,20 @@ public class PlayerMovement : MonoBehaviour
 
         CrouchInput();
 
+        if (isCeilinged && !isGrounded)
+        {
+            CrouchAcrion();
+        }
+
+
         // apply gravity
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+        if (isCeilinged)
+        {
+            velocity.y = 0;
         }
 
         velocity.y += gravity * Time.deltaTime;
@@ -76,15 +89,25 @@ public class PlayerMovement : MonoBehaviour
 
     void CrouchInput()
     {
-        if (Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetKeyDown(KeyCode.C) && !isCrouching)
         {
-            transform.localScale = new Vector3(1, 0.6f, 1);
+            CrouchAcrion();
         }
-        else if (!Physics.CheckSphere(topCheck.position, groundDistance, groundMask))
-        {            
-            transform.localScale = new Vector3(1, 1, 1);
-
+        else if (!isCeilinged && Input.GetKeyDown(KeyCode.C) && isCrouching)
+        {
+            StandUpAction();
         }
+    }
 
+    void CrouchAcrion()
+    {
+        transform.localScale = new Vector3(1, 0.6f, 1);
+        isCrouching = true;
+    }
+
+    void StandUpAction()
+    {
+        transform.localScale = new Vector3(1, 1, 1);
+        isCrouching = false;
     }
 }
