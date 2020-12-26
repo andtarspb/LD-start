@@ -28,6 +28,9 @@ public class Door : MonoBehaviour
 
     public bool isInteractable;
 
+    [SerializeField]
+    bool openBackwards;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,34 +47,39 @@ public class Door : MonoBehaviour
             {
                 if (currentPlayerPos == PlayerPos.Front)
                 {
-                    RotateDoor(-90f);
+                    RotateDoor(-90f, duration);
                     currentState = DoorState.OpenedBackward;
                 }
                 else if (currentPlayerPos == PlayerPos.Back)
                 {
-                    RotateDoor(90f);
+                    RotateDoor(90f, duration);
                     currentState = DoorState.OpenedForward;
                 }
             }
             else if (currentState == DoorState.OpenedBackward)
             {
-                RotateDoor(90f);
+                RotateDoor(90f, duration);
                 currentState = DoorState.Closed;
             }
             else if (currentState == DoorState.OpenedForward)
             {
-                RotateDoor(-90f);
+                RotateDoor(-90f, duration);
                 currentState = DoorState.Closed;
             }
         }        
     }
 
-    void RotateDoor(float degrees)
+    public void RotateDoor(float degrees, float length)
     {
         isInteractable = false;
 
         Sequence mySequence = DOTween.Sequence();
-        mySequence.Append(transform.DORotate(new Vector3(0f, degrees, 0f), duration, RotateMode.LocalAxisAdd));
+        mySequence.Append(transform.DORotate(new Vector3(0f, degrees * DirToOpen(), 0f), length, RotateMode.LocalAxisAdd));
         mySequence.AppendCallback(() => isInteractable = true);
+    }
+
+    int DirToOpen()
+    {
+        return (openBackwards) ? -1 : 1;
     }
 }

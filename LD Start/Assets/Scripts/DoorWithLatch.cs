@@ -49,11 +49,7 @@ public class DoorWithLatch : Door
                 {
                     if (locked)
                     {
-                        // play latch open anim
-                        Sequence mySequence = DOTween.Sequence();
-                        mySequence.AppendCallback(() => latch.PlayAnimation());
-                        mySequence.AppendInterval(latch.duration);
-                        mySequence.AppendCallback(() => RotateDoor(90f, duration));
+                        OpenLatch();
                         locked = false;
                     }
                     else
@@ -77,13 +73,14 @@ public class DoorWithLatch : Door
         }
     }
 
-    void RotateDoor(float degrees, float length)
+    void OpenLatch()
     {
         isInteractable = false;
 
         Sequence mySequence = DOTween.Sequence();
-        mySequence.Append(transform.DORotate(new Vector3(0f, degrees, 0f), length, RotateMode.LocalAxisAdd));
-        mySequence.AppendCallback(() => isInteractable = true);
+        mySequence.AppendCallback(() => latch.PlayAnimation());
+        mySequence.AppendInterval(latch.duration);
+        mySequence.AppendCallback(() => RotateDoor(90f, duration));
     }
 
     void ShakeDoor(float degrees, float length)

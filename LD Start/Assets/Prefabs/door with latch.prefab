@@ -228,8 +228,8 @@ GameObject:
   - component: {fileID: 5081174908403941795}
   - component: {fileID: 5081174908403941792}
   - component: {fileID: 5081174908403941793}
-  - component: {fileID: 5081174908403941854}
   - component: {fileID: 2044594346466038059}
+  - component: {fileID: 1523644464227084904}
   m_Layer: 8
   m_Name: door with latch
   m_TagString: door
@@ -9496,20 +9496,6 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!64 &5081174908403941854
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5081174908403941855}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!114 &2044594346466038059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9531,6 +9517,19 @@ MonoBehaviour:
   shakeDegree: 2
   shakeDuration: 0.1
   latch: {fileID: 7522606568132288586}
+--- !u!65 &1523644464227084904
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5081174908403941855}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.0000024, y: 3, z: 0.14}
+  m_Center: {x: -0.99999887, y: 1.5, z: -0.006620154}
 --- !u!1 &5770886785393485189
 GameObject:
   m_ObjectHideFlags: 0
