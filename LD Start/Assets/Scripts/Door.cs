@@ -78,7 +78,7 @@ public class Door : MonoBehaviour
         mySequence.AppendCallback(() => isInteractable = true);
     }
 
-    int DirToOpen()
+    public int DirToOpen()
     {
         return (openBackwards) ? -1 : 1;
     }

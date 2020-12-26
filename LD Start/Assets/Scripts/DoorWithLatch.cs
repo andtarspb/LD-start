@@ -11,9 +11,9 @@ public class DoorWithLatch : Door
     public bool triedToOpen;
 
     [SerializeField]
-    float shakeDegree;
+    public float shakeDegree = 2f;
     [SerializeField]
-    float shakeDuration;
+    public float shakeDuration = 0.1f;
 
     [SerializeField]
     LatchAnimation latch;
@@ -83,14 +83,14 @@ public class DoorWithLatch : Door
         mySequence.AppendCallback(() => RotateDoor(90f, duration));
     }
 
-    void ShakeDoor(float degrees, float length)
+    public void ShakeDoor(float degrees, float length)
     {
         isInteractable = false;
 
         Sequence mySequence = DOTween.Sequence();
-        mySequence.Append(transform.DORotate(new Vector3(0f, -degrees, 0f), length, RotateMode.LocalAxisAdd));
-        mySequence.Append(transform.DORotate(new Vector3(0f, degrees * 1.5f, 0f), length, RotateMode.LocalAxisAdd));
-        mySequence.Append(transform.DORotate(new Vector3(0f, -degrees/2, 0f), length, RotateMode.LocalAxisAdd));
+        mySequence.Append(transform.DORotate(new Vector3(0f, -degrees * DirToOpen(), 0f), length, RotateMode.LocalAxisAdd));
+        mySequence.Append(transform.DORotate(new Vector3(0f, degrees * DirToOpen() * 1.5f, 0f), length, RotateMode.LocalAxisAdd));
+        mySequence.Append(transform.DORotate(new Vector3(0f, -degrees * DirToOpen() / 2, 0f), length, RotateMode.LocalAxisAdd));
         mySequence.AppendCallback(() => isInteractable = true);
     }
 }

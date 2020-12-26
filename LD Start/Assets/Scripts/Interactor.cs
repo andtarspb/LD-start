@@ -7,6 +7,8 @@ public class Interactor : MonoBehaviour
 {
     [SerializeField]
     string doorTag = "door";
+    [SerializeField]
+    string keyTag = "key";
 
     [SerializeField]
     float rayLength;
@@ -32,10 +34,13 @@ public class Interactor : MonoBehaviour
         if (Physics.Raycast(ray, out hit, rayLength))
         {
             GameObject objectToInteract = hit.transform.gameObject;
-
             if (objectToInteract.CompareTag(doorTag))                
             {
                 HandleDoorInteraction(objectToInteract);
+            }
+            else if (objectToInteract.CompareTag(keyTag))
+            {
+                HandleKeyInteraction(objectToInteract);
             }
         }
     }
@@ -48,13 +53,30 @@ public class Interactor : MonoBehaviour
         }
     }
 
+    void HandleKeyInteraction(GameObject obj)
+    { 
+        KeyScript key = obj.GetComponent<KeyScript>();
+
+        interactText.GetComponent<Text>().text = "Press \"E\" to take \"" + key.keyName + "\"";
+        interactText.SetActive(true);
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            key.PickUpKey();
+        }
+    }
+
     void HandleDoorInteraction(GameObject obj)
     {
         interactText.SetActive(true);
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (obj.GetComponent<DoorWithLatch>())
+            if (obj.GetComponent<DoorWithKey>())
+            {
+                obj.GetComponent<DoorWithKey>().Interact();
+            }
+            else if (obj.GetComponent<DoorWithLatch>())
             {
                 obj.GetComponent<DoorWithLatch>().Interact();
             }
@@ -76,6 +98,14 @@ public class Interactor : MonoBehaviour
             if (col.frontCollider && doorWithLatch.locked && doorWithLatch.triedToOpen)
             {
                 interactText.GetComponent<Text>().text = "Locked from the other side";
+            }            
+        }
+        else if (col.GetComponentInParent<DoorWithKey>())
+        {
+            var doorWithKey = col.GetComponentInParent<DoorWithKey>();
+            if (!doorWithKey.hasKey && doorWithKey.triedToOpen)
+            {
+                interactText.GetComponent<Text>().text = "Requires key";
             }
         }
     }
