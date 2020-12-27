@@ -9,6 +9,8 @@ public class Interactor : MonoBehaviour
     string doorTag = "door";
     [SerializeField]
     string keyTag = "key";
+    [SerializeField]
+    string weaponTag = "weapon";
 
     [SerializeField]
     float rayLength;
@@ -42,6 +44,10 @@ public class Interactor : MonoBehaviour
             {
                 HandleKeyInteraction(objectToInteract);
             }
+            else if (objectToInteract.CompareTag(weaponTag))
+            {
+                HandleWeaponInteraction(objectToInteract);
+            }
         }
     }
 
@@ -63,6 +69,19 @@ public class Interactor : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             key.PickUpKey();
+        }
+    }
+
+    void HandleWeaponInteraction(GameObject obj)
+    {
+        PickUpWeapon weapon = obj.GetComponent<PickUpWeapon>();
+
+        interactText.GetComponent<Text>().text = "Press \"E\" to take \"" + weapon.weaponName + "\"";
+        interactText.SetActive(true);
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            weapon.PickUp();
         }
     }
 

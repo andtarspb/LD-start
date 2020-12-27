@@ -758,6 +758,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keyName: 
+  pickupDuration: 1
   doors: []
 --- !u!65 &966977563334831913
 BoxCollider:

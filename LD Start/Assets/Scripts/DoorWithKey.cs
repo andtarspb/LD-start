@@ -17,6 +17,7 @@ public class DoorWithKey : Door
     // Start is called before the first frame update
     void Start()
     {
+        DOTween.Init(true, true, LogBehaviour.ErrorsOnly);
         isInteractable = true;
         triedToOpen = false;
         hasKey = false;

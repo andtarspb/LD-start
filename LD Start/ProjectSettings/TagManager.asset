@@ -6,6 +6,8 @@ TagManager:
   tags:
   - door
   - key
+  - weapon
+  - rope
   layers:
   - Default
   - TransparentFX
