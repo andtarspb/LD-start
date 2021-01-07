@@ -22,6 +22,6 @@ public class RopeScript : MonoBehaviour
             ropeManager.AllRopesDestroyed();
         }
 
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 }

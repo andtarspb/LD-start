@@ -49,6 +49,11 @@ public class WeaponSword : MonoBehaviour
     {
         RopeScript rope = obj.GetComponent<RopeScript>();
 
-        rope.DestroyTheRope();
+        if (rope != null)
+        {
+            rope.DestroyTheRope();
+        }
+
+        Destroy(obj);
     }
 }

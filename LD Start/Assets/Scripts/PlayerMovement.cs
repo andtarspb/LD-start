@@ -28,6 +28,9 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 velocity;
 
+    [SerializeField]
+    float landingDeathVelocity = -15f;
+
     CharacterController charController;
 
     // Start is called before the first frame update
@@ -48,8 +51,13 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (isGrounded && velocity.y < 0)
         {
+            if (velocity.y < landingDeathVelocity)
+            {
+                Debug.Log("Dead");
+            }
+
             velocity.y = -2f;
-            charController.stepOffset = 0.5f;
+            charController.stepOffset = 0.5f;           
         }
 
         // apply input
@@ -57,9 +65,9 @@ public class PlayerMovement : MonoBehaviour
 
         CrouchInput();
 
-        if (isCeilinged && !isGrounded)
+        if (isCeilinged && isGrounded)
         {
-            CrouchAcrion();
+            CrouchAction();
         }
 
 
@@ -91,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.C) && !isCrouching)
         {
-            CrouchAcrion();
+            CrouchAction();
         }
         else if (!isCeilinged && Input.GetKeyDown(KeyCode.C) && isCrouching)
         {
@@ -99,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void CrouchAcrion()
+    void CrouchAction()
     {
         transform.localScale = new Vector3(1, 0.6f, 1);
         isCrouching = true;
@@ -109,5 +117,15 @@ public class PlayerMovement : MonoBehaviour
     {
         transform.localScale = new Vector3(1, 1, 1);
         isCrouching = false;
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        float colVelocity = collision.relativeVelocity.magnitude;
+        if (colVelocity > 1)
+        {
+            Debug.Log("colision valocity: " + colVelocity);
+        }
+        
     }
 }
