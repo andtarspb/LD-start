@@ -18,6 +18,8 @@ public class Interactor : MonoBehaviour
     [SerializeField]
     GameObject interactText;
 
+    bool showedSwitchText;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +35,7 @@ public class Interactor : MonoBehaviour
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
+       
         if (Physics.Raycast(ray, out hit, rayLength))
         {
             GameObject objectToInteract = hit.transform.gameObject;
